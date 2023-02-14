@@ -19,7 +19,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
 
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setListeners(){
         binding.imageSignOut.setOnClickListener(view -> signOut());
+        binding.fabNewChat.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(),UsersActivity.class)));
     }
 
     // Load User Details...
