@@ -1,13 +1,14 @@
 package com.example.chatapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.chatapp.R;
 import com.example.chatapp.adapters.RecentConversationsAdapter;
 import com.example.chatapp.databinding.ActivityMainBinding;
 import com.example.chatapp.listeners.ConversionListener;
@@ -17,7 +18,6 @@ import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ConversionListener {
+public class MainActivity extends BaseActivity implements ConversionListener {
     
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();
+        loadUserDetails();
         getToken();
         setListeners();
         listenConversations();
@@ -61,7 +62,12 @@ public class MainActivity extends AppCompatActivity implements ConversionListene
 
     // Load User Details...
     //
-
+    private  void loadUserDetails(){
+        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+        binding.imageProfile.setImageBitmap(bitmap);
+    }
 
 
     private void showToast(String message){
